@@ -6,7 +6,7 @@
         v-for="tab in tabs"
         :key="tab.name"
         @click="goTo(tab.name)"
-        :class="[$route.name === tab.name ? activeClass : 'cursor-pointer hover:text-indigo-800', 'transition-colors duration-200 ease-in-out']">
+        :class="[$route.name === tab.name ? activeClass : 'cursor-pointer hover:text-indigo-300', 'transition-colors duration-200 ease-in-out']">
         {{ tab.label }}
       </span>
     </div>
@@ -35,7 +35,7 @@ export default {
   },
   computed: {
     activeClass() {
-      return "text-indigo-600 cursor-default font-bold"
+      return "text-indigo-400 cursor-default font-bold"
     }
   },
   methods: {

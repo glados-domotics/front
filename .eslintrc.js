@@ -32,13 +32,13 @@ module.exports = {
         multiline: 1
       },
     ],
-     "vue/first-attribute-linebreak": [
-       "error",
-       {
-         singleline: "beside",
-         multiline: "below"
-       }
-     ],
+    "vue/first-attribute-linebreak": [
+      "error",
+      {
+        singleline: "beside",
+        multiline: "below"
+      }
+    ],
     // https://eslint.org/docs/rules/
     semi: ["error", "never"],
     quotes: ["error", "double"],
