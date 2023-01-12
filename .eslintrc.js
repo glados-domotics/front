@@ -32,13 +32,13 @@ module.exports = {
         multiline: 1
       },
     ],
-     "vue/first-attribute-linebreak": [
-       "error",
-       {
-         singleline: "beside",
-         multiline: "below"
-       }
-     ],
+    "vue/first-attribute-linebreak": [
+      "error",
+      {
+        singleline: "beside",
+        multiline: "below"
+      }
+    ],
     // https://eslint.org/docs/rules/
     semi: ["error", "never"],
     quotes: ["error", "double"],
@@ -77,4 +77,5 @@ module.exports = {
     // https://eslint.vuejs.org/rules/no-v-html.html
     "vue/no-v-html": "off",
   },
+  // ignorePatterns: ["src/components/dashboard/RoomPreview.vue"]  // to prevent issue with SVG style
 }

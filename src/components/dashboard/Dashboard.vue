@@ -1,10 +1,13 @@
 <template>
-  <div class="flex flex-col gap-5 h-full overflow-hidden">
+  <div
+    class="flex flex-col gap-5 h-full overflow-hidden"
+    :class="{'loaded': !isLoading}">
     <h1 class="text-indigo-600 font-bold text-2xl">Dashboard</h1>
     <sidebar-list full-height>
       <template #sidebar>
         <details
           open
+          class="staggered-item"
           v-for="room in orderedListByRoom"
           :key="room.id">
           <summary class="unselectable">
@@ -13,7 +16,7 @@
           <ul class="pl-4">
             <li
               @click="selectEntity(entity.id)"
-              class="card-item rounded-md p-2 border-2 mb-2 flex flex-row justify-between cursor-pointer"
+              class="card-item rounded-md p-2 border-2 mb-2 flex flex-row justify-between cursor-pointer staggered-item"
               :class="{'selected': selectedEntity?.id === entity.id}"
               v-for="entity in room.entities"
               :key="entity.id">
@@ -53,18 +56,27 @@
         </details>
       </template>
       <template #content>
-        <p>{{ selectedEntity }}</p>
+        <div class="relative h-full overflow-hidden">
+          <room-preview />
+          <bottom-pane />
+        </div>
       </template>
     </sidebar-list>
   </div>
 </template>
 
 <script>
+import BottomPane from  "@/components/dashboard/BottomPane.vue"
+import RoomPreview from  "@/components/dashboard/RoomPreview.vue"
 import SidebarList from "@/components/dashboard/SidebarList"
 
 export default {
   name: "Dashboard",
-  components: { SidebarList },
+  components: {
+    BottomPane,
+    SidebarList,
+    RoomPreview
+  },
   mounted() {
     this.getEntities()
   },
@@ -109,7 +121,7 @@ export default {
     orderedListByRoom(){
       return this.$store.getters.getNestedEntities
     },
-    selectedEntity:{
+    selectedEntity: {
       get(){
         return this.$store.state.selectedEntity
       },
@@ -127,11 +139,6 @@ $selected: #a1c4fd;
 $bRadius: 6px;
 $mid-grey-darker: #777;
 
-.status-button{
-  &.on{ color: #009900; }
-  &.unavailable{ color: #FF0800; }
-  &.off{ color: #FFC72C; }
-}
 .card-item{
   border-color: $selected;
   &.selected{
@@ -195,6 +202,26 @@ details{
       top: 26px;
       left: 2px;
       height: calc(100% - 26px);
+    }
+  }
+}
+
+// Should be in a proper CSS class
+// Bu I wanted to use SCSS without configuring it
+.loaded{
+  .staggered-item{
+    animation-name: stagger-y-transition;
+    animation-duration: .15s;
+    animation-timing-function: ease-in-out;
+    animation-direction: normal;
+    animation-fill-mode: both;
+    animation-iteration-count: 1;
+  }
+  $items: 12;
+  @for $i from 1 through $items {
+    .staggered-item:nth-child(#{$i}) {
+      animation-delay: +#{$i/6 + .15}s;
+      // animation-delay: +#{math.div($i, 6) + .25}s;
     }
   }
 }

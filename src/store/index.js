@@ -1,5 +1,5 @@
-import { createStore } from "vuex"
 import coreApi from "@/providers/core-api"
+import { createStore } from "vuex"
 
 export default createStore({
   state: {
@@ -13,7 +13,11 @@ export default createStore({
       let index = 0
       state.entities.forEach(el => {
         if (!entitiesByRoom[el.room_id]){
-          entitiesByRoom[el.room_id] = {id: el.room_id, name: `Room ${index + 1}`, entities: []}
+          entitiesByRoom[el.room_id] = {
+            id: el.room_id,
+            name: `Room ${index + 1}`,
+            entities: [] 
+          }
           index++
         }
         entitiesByRoom[el.room_id].entities.push(el)

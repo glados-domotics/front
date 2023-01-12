@@ -14,7 +14,7 @@
       </button>
     </div>
     <div
-      class="flex flex-row justify-start sidebar h-full overflow-hidden scroll"
+      class="flex flex-row justify-start sidebar h-full overflow-hidden"
       :class="{'is-expanded': expanded}">
       <aside
         class="flex flex-col"
@@ -25,7 +25,7 @@
           class="button action backdrop">
           <span class="button-wrap"></span>
         </button>
-        <nav class="sidebar-inner">
+        <nav class="sidebar-inner scroll">
           <div class="flex flex-col justify-start">
             <slot name="sidebar" />
           </div>
@@ -33,11 +33,11 @@
       </aside>
     </div>
     <div
-      class="flex flex-col h-full scroll p-3"
+      class="flex flex-col h-full scroll p-0 md:p-3"
       style="width:100%;overflow-y: auto;">
       <article
         class="h-full"
-        :class="{'pa-3': maxWidth, 'fill-height': fullHeight}">
+        :class="{'pa-0': maxWidth, 'fill-height': fullHeight}">
         <slot name="content" />
       </article>
     </div>
@@ -57,9 +57,7 @@ export default {
     },
   },
   data(){
-    return {
-      expanded: false
-    }
+    return { expanded: false }
   }
 }
 </script>
