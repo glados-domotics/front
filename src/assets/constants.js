@@ -5,3 +5,7 @@ export const UNITS = {
   "multimedia": "chaîne",
   "switch": "",
 }
+
+export function readText(device, status){
+  return `The ${device} is ${status}.`
+}

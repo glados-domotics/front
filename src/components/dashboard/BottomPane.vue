@@ -2,7 +2,7 @@
   <div
     class="absolute bottom-pane p-6"
     :class="{'on': selectedEntity}">
-    <!-- <p>{{ selectedEntity }}</p> -->
+    <p>{{ selectedEntity }}</p>
     <div v-if="selectedEntity">
         
       <div class="flex flex-row justify-between items-center">
@@ -66,20 +66,46 @@
         <div class="unit text-gray-500 font-bold ml-2">
           {{ unit(selectedEntity.type) }}
         </div>
+
       </div>
       
+      <button
+        class="mt-4 border-2 rounded-md cursor-pointer p-3"
+        @click="textToSpeech">
+        <svg
+          class="mr-2 inline"
+          style="width:24px;height:24px"
+          viewBox="0 0 24 24">
+          <path
+            fill="currentColor"
+            d="M14,3.23V5.29C16.89,6.15 19,8.83 19,12C19,15.17 16.89,17.84 14,18.7V20.77C18,19.86 21,16.28 21,12C21,7.72 18,4.14 14,3.23M16.5,12C16.5,10.23 15.5,8.71 14,7.97V16C15.5,15.29 16.5,13.76 16.5,12M3,9V15H7L12,20V4L7,9H3Z" />
+        </svg> Lire le statut</button>
 
     </div>
   </div>
 </template>
 
 <script>
-import { UNITS } from "@/assets/constants"
+import { readText, UNITS } from "@/assets/constants"
 export default {
   methods: {
     unit(val){
       if (UNITS[val]) return UNITS[val]
       return ""
+    },
+    textToSpeech(){
+      let utter = new SpeechSynthesisUtterance()
+      utter.lang = "en-US"
+      const text = readText(this.selectedEntity.name, this.selectedEntity.status)
+      utter.text = text
+      utter.volume = 0.8
+      utter.rate = 0.8
+
+      // event after text has been spoken
+      utter.onend = function () {
+        // console.log("Speech has finished")
+      }
+      window.speechSynthesis.speak(utter)
     }
   },
   computed: {
