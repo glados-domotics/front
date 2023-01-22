@@ -11,17 +11,21 @@ export default createStore({
   getters: {
     getNestedEntities(state) {
       var entitiesByRoom = {}
-      let index = 0
       state.entities.forEach(el => {
-        if (!entitiesByRoom[el.room_id]){
-          entitiesByRoom[el.room_id] = {
+        let name = "Other"
+        if (el.room_id && el.room?.name){
+          name = el.room_id
+        }
+
+        if (!entitiesByRoom[name]){
+          entitiesByRoom[name] = {
             id: el.room_id,
-            name: `Room ${index + 1}`,
+            name: el?.room?.name || "Other",
             entities: [] 
           }
-          index++
         }
-        entitiesByRoom[el.room_id].entities.push(el)
+        
+        entitiesByRoom[name].entities.push(el)
       })
       return entitiesByRoom
     }
