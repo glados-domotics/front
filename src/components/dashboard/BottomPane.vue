@@ -2,7 +2,9 @@
   <div
     class="absolute bottom-pane p-6"
     :class="{'on': selectedEntity}">
-    <p>{{ selectedEntity }}</p>
+
+    <!-- {{ selectedEntity }} -->
+    
     <div v-if="selectedEntity">
         
       <div class="flex flex-row justify-between items-center">
@@ -56,43 +58,98 @@
         </div>
         <div class="ml-5 text-gray-400 hidden md:block">{{ selectedEntity.id }}</div>
       </div>
+      <div class="flex flex-row justify-between items-start">
+        <button
+          class="mt-4 border-2 rounded-md cursor-pointer p-3"
+          @click="textToSpeech">
+          <svg
+            class="mr-2 inline"
+            style="width:24px;height:24px"
+            viewBox="0 0 24 24">
+            <path
+              fill="currentColor"
+              d="M14,3.23V5.29C16.89,6.15 19,8.83 19,12C19,15.17 16.89,17.84 14,18.7V20.77C18,19.86 21,16.28 21,12C21,7.72 18,4.14 14,3.23M16.5,12C16.5,10.23 15.5,8.71 14,7.97V16C15.5,15.29 16.5,13.76 16.5,12M3,9V15H7L12,20V4L7,9H3Z" />
+          </svg> Lire le statut</button>
+        <div class="text-right">
+          <button
+            class="mt-4 border-2 rounded-md cursor-pointer p-3"
+            :class="{'border-orange-400': edit}"
+            @click="editMode">
+            <svg
+              class="mr-2 inline"
+              style="width:24px;height:24px"
+              viewBox="0 0 24 24">
+              <path
+                fill="currentColor"
+                d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z" />
+            </svg> {{edit ? "Sauvegarder" : "Editer"}}</button>
+          <div :class="{'invisible': !edit}">
+            Statut : 
+            <select
+              class="mt-1"
+              v-model="form.status">
+              <option value="on">ON</option>
+              <option value="off">OFF</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <!-- Use v-show instead of v-if to keep the node in cache, and not lose knob -->
       <div
-        v-if="selectedEntity.value"
-        class="flex flex-row justify-start items-end mt-8 w-full">
+        class="mt-8 w-full text-center"
+        v-show="selectedEntity.value && entityParams.numeric">
 
+        <div
+          class="relative inline-block knob-ctn"
+          :class="{'invisible': !entityParams.numeric, 'pointer-events-none': !this.edit}">
+          <input
+            type="text"
+            value="20"
+            class="dial" />
+        </div>
+        <p
+          :class="{'on': edit}"
+          class="tuto">Vous pouvez éditer ce bouton</p>
+
+      </div>
+      <div
+        v-show="!entityParams.numeric"
+        class="flex flex-row justify-center items-end mt-8 w-full">
         <div class="value">
           {{ selectedEntity.value }}
         </div>
         <div class="unit text-gray-500 font-bold ml-2">
-          {{ unit(selectedEntity.type) }}
+          {{ entityParams.unit }}
         </div>
-
       </div>
-      
-      <button
-        class="mt-4 border-2 rounded-md cursor-pointer p-3"
-        @click="textToSpeech">
-        <svg
-          class="mr-2 inline"
-          style="width:24px;height:24px"
-          viewBox="0 0 24 24">
-          <path
-            fill="currentColor"
-            d="M14,3.23V5.29C16.89,6.15 19,8.83 19,12C19,15.17 16.89,17.84 14,18.7V20.77C18,19.86 21,16.28 21,12C21,7.72 18,4.14 14,3.23M16.5,12C16.5,10.23 15.5,8.71 14,7.97V16C15.5,15.29 16.5,13.76 16.5,12M3,9V15H7L12,20V4L7,9H3Z" />
-        </svg> Lire le statut</button>
 
     </div>
   </div>
 </template>
 
 <script>
-import { readText, UNITS } from "@/assets/constants"
+import { ENTITY_PARAMS, readText } from "@/assets/constants"
+import $ from "jquery"
+// eslint-disable-next-line
+import { knob } from "@/assets/knob"
+
+
 export default {
+  data(){
+    return {
+      edit: false,
+      knobLoaded: false,
+      form: {
+        value: "",
+        status: ""
+      },
+    }
+  },
+  async mounted(){
+    // console.log(knob)
+    this.initKnob()
+  },
   methods: {
-    unit(val){
-      if (UNITS[val]) return UNITS[val]
-      return ""
-    },
     textToSpeech(){
       let utter = new SpeechSynthesisUtterance()
       utter.lang = "en-US"
@@ -106,9 +163,90 @@ export default {
         // console.log("Speech has finished")
       }
       window.speechSynthesis.speak(utter)
+    },
+    initKnob(){
+      if (!this.selectedEntity) return
+      if (this.knobLoaded) return
+      $(".dial").knob({
+        label: this.selectedEntity?.type || "",
+        value: this.selectedEntity?.value || 20,
+        fgColor: "#00d6a3",
+        angleOffset: -125,
+        angleArc: 250,
+        min: 10,
+        max: 50,
+        width: 200,
+        className: "dial",
+        lineCap: "round",
+        displayInput: true,
+
+        format: (v) => {
+          if (Object.keys(ENTITY_PARAMS).includes(this.selectedEntity.type)){
+            // return v 
+            return ENTITY_PARAMS[this.selectedEntity.type].format(v)
+          }
+          return v
+        },
+        release: (v) => {
+          this.form.value = v
+        }
+      })
+      // $(".dial").val(this.selectedEntity.value).trigger("change")
+      this.knobLoaded = true
+    },
+    editMode(){
+      if (this.edit) this.saveEntity()
+      this.edit = !this.edit
+    },
+    updateKnob(){
+      if (!this.knobLoaded) {
+        this.initKnob()
+      }
+      if (Object.keys(ENTITY_PARAMS).includes(this.selectedEntity.type)){
+        var value = ENTITY_PARAMS[this.selectedEntity.type].format(this.selectedEntity.value)
+        console.log(value)
+        $(".dial").trigger(
+          "configure", { ...ENTITY_PARAMS[this.selectedEntity.type] }
+        )
+        $(".dial").val(value).trigger("change")
+      } else {
+        console.log("NaN")
+      }
+    },
+    saveEntity(){
+      const form = {
+        value: this.form.value,
+        status: this.form.status,
+      }
+      this.$store.dispatch("saveEntity", {id: this.form.id, form })
+        .then(() => {})   // the store resolve(res) the value of the XHR - just in case
+        .catch((err) => {
+          this.isError = true
+          console.warn(err)
+        })
+        .finally(() => {
+          this.isLoading = false
+        })
+    }
+  },
+  watch: {
+    selectedEntity(newVal){
+      if (this.edit) this.edit = false
+      this.form = {
+        id: newVal.id,
+        value: newVal.value,
+        status: newVal.status
+      }
+      setTimeout(() => {  // required to let the DOM renders
+        this.updateKnob()
+      }, 60)
     }
   },
   computed: {
+    entityParams(){
+      if (Object.keys(ENTITY_PARAMS).includes(this.selectedEntity.type)) return ENTITY_PARAMS[this.selectedEntity.type]
+      return { unit: "", numeric: false }
+    },
     selectedEntity: {
       get(){
         return this.$store.state.selectedEntity
@@ -152,5 +290,22 @@ export default {
 .unit{
     transform: translateY(-27px);
     font-size: 2rem;
+}
+.dial{
+  top: 0%;
+  left: calc(100% - 22px);
+  transform-origin: 50% 50%;
+  transform: scale(.65);
+  width: 150px !important;
+}
+.tuto{
+  transform: translateY(100%);
+  opacity: 0;
+  transition: all .35s 0s ease-in-out;
+  &.on{
+    transform: translateY(0);
+    opacity: 1;
+    transition: all .35s .1s ease-in-out;
+  }
 }
 </style>

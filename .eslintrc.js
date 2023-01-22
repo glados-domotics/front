@@ -77,5 +77,5 @@ module.exports = {
     // https://eslint.vuejs.org/rules/no-v-html.html
     "vue/no-v-html": "off",
   },
-  // ignorePatterns: ["src/components/dashboard/RoomPreview.vue"]  // to prevent issue with SVG style
+  ignorePatterns: ["src/assets/knob.js"]  // to prevent issue with SVG style
 }

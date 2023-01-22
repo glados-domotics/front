@@ -70,6 +70,12 @@ class BaseApi {
     // Params/data axios options
     if (method === "get") {
       options.params = payload
+    } else if (method === "patch") {  // For a patch method, it needs to be formData instead of JSON
+      let formData = new FormData()
+      Object.entries(payload).forEach(([key, value]) => {
+        formData.append(key, value)
+      })
+      options.data = formData
     } else {
       options.data = payload
     }
