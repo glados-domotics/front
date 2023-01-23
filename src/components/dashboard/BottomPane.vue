@@ -204,7 +204,6 @@ export default {
       }
       if (Object.keys(ENTITY_PARAMS).includes(this.selectedEntity.type)){
         var value = ENTITY_PARAMS[this.selectedEntity.type].format(this.selectedEntity.value)
-        console.log(value)
         $(".dial").trigger(
           "configure", { ...ENTITY_PARAMS[this.selectedEntity.type] }
         )
