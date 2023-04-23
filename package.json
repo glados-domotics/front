@@ -7,20 +7,25 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
-  "engines" : { 
-    "npm" : ">=8",
-    "node" : ">=18"
+  "engines": {
+    "npm": ">=8",
+    "node": ">=18"
   },
   "dependencies": {
     "@tailwindcss/forms": "^0.4.0",
     "animate.css": "^4.1.1",
     "axios": "^0.26.0",
+    "bootstrap": "^5.2.3",
+    "bootstrap-table": "^1.21.4",
+    "bootstrap-vue": "^2.23.1",
+    "bootstrap-vue-editable-table": "^1.0.1",
     "core-js": "^3.8.3",
     "maska": "^1.5.0",
     "vue": "^3.2.13",
     "vue-advanced-cropper": "^2.8.0",
     "vue-material-design-icons": "^5.0.0",
     "vue-router": "^4.0.3",
+    "vue-styled-components": "^1.6.0",
     "vuex": "^4.0.0"
   },
   "devDependencies": {

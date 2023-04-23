@@ -5,7 +5,8 @@
       <div
         class="card"
         v-for="entity in entities"
-        :key="entity.id">
+        :key="entity.id"
+        @click="goTo('entity', entity.id)">
         <h2>{{ entity.name }}</h2>
         <span>Status:
           <span
@@ -49,9 +50,15 @@ export default {
     }
   },
   methods: {
+    goTo(name, id) {
+      this.$router.push({
+        name: name,
+        params: { id: id }
+      }
+      )
+    },
     getEntities() {
       this.isLoading = true
-
       coreApi.glados.getEntities()
         .then((entities) => {
           this.entities = entities
@@ -64,7 +71,7 @@ export default {
           this.isLoading = false
         })
     }
-  }
+  },
 }
 </script>
 
