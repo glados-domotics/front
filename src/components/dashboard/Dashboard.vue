@@ -5,9 +5,20 @@
       <div
         class="card"
         v-for="entity in entities"
-        :key="entity.id"
-        @click="goTo('entity', entity.id)">
-        <h2>{{ entity.name }}</h2>
+        :key="entity.id">
+        <h2>
+          {{ entity.name }}
+          <p
+            class="speek"
+            @click="speek(entity)">
+            <font-awesome-icon icon="fa-solid fa-volume-high" />
+          </p>
+          <p
+            class="edit"
+            @click="goTo('entity', entity.id)">
+            <font-awesome-icon icon="fa-solid fa-pen-to-square" />
+          </p>
+        </h2>
         <span>Status:
           <span
             v-if="entity.status && entity.status !== 'unavailable'"
@@ -70,6 +81,15 @@ export default {
         .finally(() => {
           this.isLoading = false
         })
+    },
+    speek(entity) {
+      let speeker = new SpeechSynthesisUtterance()
+      speeker.lang = "en-US"
+      const textToSpeek = `${entity.name}, status: ${entity.status}, type: ${entity.type}, value: ${entity.value}, room: ${entity.room.name}`
+      speeker.text = textToSpeek
+      speeker.volume = 1.0
+      speeker.rate = 1.0
+      window.speechSynthesis.speak(speeker)
     }
   },
 }
@@ -81,7 +101,7 @@ export default {
     display: grid;
     gap: 15px;
     grid-template-rows: 350px 350px;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     align-items: center;
     justify-items: center;
   }
@@ -91,13 +111,16 @@ export default {
     padding: 15px;
     background-color: '#F9F9FC';
     border-radius: 30px;
-    width: 300px;
+    width: 400px;
     height: 300px;
     transition: 200ms;
     box-shadow: 2px 2px 10px #e2e3e9;
   }
 
   .card h2 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     text-align: center;
     font-weight: bold;
     text-decoration: underline;
@@ -125,6 +148,18 @@ export default {
   .card span .status-unknow {
     font-weight: bold;
     color: orangered;
+  }
+
+  .speek, .edit {
+    width: 20px;
+    font-size: 18px;
+    margin-left: 10px;
+    margin-bottom: 0;
+  }
+
+  .speek:hover, .edit:hover {
+    cursor: pointer;
+    color: rgb(79 70 229);
   }
 
 </style>
