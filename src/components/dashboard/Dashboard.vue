@@ -1,21 +1,19 @@
 <template>
   <div class="flex flex-col gap-5">
-    <span class="text-indigo-600 font-bold text-2xl">Dashboard</span>
-    <ul>
-      <li
-        v-for="entity in entities"
-        :key="entity.id">
-        {{ entity.name }}
-      </li>
-    </ul>
+    <div class="text-indigo-600 text-center font-normal text-6xl">Dashboard</div>
+    <div class="overflow-auto">
+      <EntityTable :entities="entities" />
+    </div>
   </div>
 </template>
 
 <script>
 import coreApi from "@/providers/core-api"
+import EntityTable from "@/components/dashboard/EntityTable.vue"
 
 export default {
   name: "Dashboard",
+  components: { EntityTable },
   created() {
     this.getEntities()
   },
