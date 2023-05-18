@@ -2,6 +2,7 @@
   <div class="flex flex-col gap-5">
     <div class="text-indigo-600 text-center font-normal text-6xl">Dashboard</div>
     <button 
+      :disabled="speech"
       :class="buttonClass"
       @click="audioReport">Audio Report !</button>
     <div class="overflow-auto">

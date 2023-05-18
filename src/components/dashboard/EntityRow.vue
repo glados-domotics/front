@@ -1,6 +1,6 @@
 <template>
   <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ index + 1 }}</td>
-  <td class="text-sm text-gray-900 font-light px-2">
+  <td class="text-sm text-gray-900 font-light px-2 whitespace-nowrap">
     <input 
       type="text"
       class="border-0 focus:ring-0 focus:border-0 focus:outline-none text-sm text-gray-900 font-light p-2"
@@ -24,7 +24,7 @@
   </td>
   <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
     <select 
-      class="border-0 focus:ring-0 focus:border-0 focus:outline-none w-full text-sm text-gray-900 font-light p-2"
+      class="border-0 focus:ring-0 focus:border-0 focus:outline-none w-full text-sm text-gray-900 font-light p-2 nowrap"
       @change="updateEntity('type', $event.target.value) && saveEntity">
       <option 
         v-for="type in availableTypes" 
