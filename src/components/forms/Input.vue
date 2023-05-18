@@ -29,7 +29,7 @@ import { ref, toRef } from "vue"
 import useWritingText from "@/composables/useWritingText"
 
 export default {
-  name: "Input",
+  name: "InputCustom",
   props: {
     modelValue: {
       type: String,

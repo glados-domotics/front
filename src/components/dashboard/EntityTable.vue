@@ -15,6 +15,11 @@
         <th 
           scope="col" 
           class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+          Room
+        </th>
+        <th 
+          scope="col" 
+          class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
           Type
         </th>
         <th 
@@ -39,31 +44,20 @@
         v-for="(entity, index) in entities" 
         :key="entity.id"
         class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
-        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ index + 1 }}</td>
-        <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-          {{ entity.name }}
-        </td>
-        <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-          {{ entity.type }}
-        </td>
-        <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-          {{ entity.status }}
-        </td>
-        <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-          {{ entity.value ?? "N/A" }}
-        </td>
-        <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-          {{ new Date(Date.parse(entity.created_at)).toLocaleDateString('fr') }}
-        </td>
+        <EntityRow 
+          :entity="entity" 
+          :index="index" />
       </tr>
     </tbody>
   </table>
 </template>
 
 <script>
+import EntityRow from "@/components/dashboard/EntityRow.vue"
 
 export default {
   name: "EntityTable",
+  components: { EntityRow },
   props: {
     entities: {
       type: Array,

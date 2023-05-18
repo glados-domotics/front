@@ -8,8 +8,11 @@ import { createApp } from "vue"
 import router from "./router"
 import store from "./store"
 import icons from "@/plugins/icons.js"
+import mitt from "mitt"
 
 const app = createApp(App)
+const emitter = mitt()
+app.config.globalProperties.emitter = emitter
 app.use(store)
 app.use(router)
 app.use(icons)
