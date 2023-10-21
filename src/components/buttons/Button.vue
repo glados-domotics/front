@@ -10,6 +10,8 @@
       disabled:bg-gray-300 disabled:text-gray-400 disabled:cursor-not-allowed"
     :class="classes">
     {{ label }}
+    <component :is="icon">
+    </component>
     <span
       v-if="emoji"
       class="ml-4">{{ emoji }}</span>

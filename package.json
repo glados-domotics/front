@@ -7,11 +7,13 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
-  "engines" : { 
-    "npm" : ">=8",
-    "node" : ">=18"
+  "engines": {
+    "npm": ">=8",
+    "node": ">=18"
   },
   "dependencies": {
+    "@jamescoyle/vue-icon": "^0.1.2",
+    "@mdi/js": "^7.3.67",
     "@tailwindcss/forms": "^0.4.0",
     "animate.css": "^4.1.1",
     "axios": "^0.26.0",
