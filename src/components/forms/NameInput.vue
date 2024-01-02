@@ -1,10 +1,7 @@
 <template>
   <Input
+    label="name"
     icon="account-outline"
-    :mask="{
-      mask: new Array(26).join('L'),
-      tokens: { 'L': { pattern: /[0-9A-zÀ-ú- ]/ }}
-    }"
     :placeholders="['Pierre-Alexandre', 'P-A', 'Barbouy', 'Front-end Developer']"
     prop="name" />
 </template>
