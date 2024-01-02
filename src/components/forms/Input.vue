@@ -3,7 +3,7 @@
     <label
       v-if="label"
       :for="prop"
-      class="block text-sm font-medium text-gray-700">{{ label }}</label>
+      class="block text-sm font-medium text-gray-700 my-3">{{ label }}</label>
     <div class="relative">
       <input
         class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full text-lg border-gray-200 rounded-md placeholder-gray-300"
@@ -11,8 +11,7 @@
         autocomplete="off"
         :name="prop"
         :id="prop"
-        v-model="input"
-        v-maska="mask"
+        :value="modelValue"
         :placeholder="placeholderValue"
         :class="{ 'pl-11': !!icon }"
         @input="handleInput" />
@@ -74,6 +73,7 @@ export default {
       const value = event.target.value
       this.$emit("update:modelValue", value)
       this.$emit("input", value)
+
       event.stopPropagation()
     }
   }
